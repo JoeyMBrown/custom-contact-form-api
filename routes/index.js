@@ -7,7 +7,19 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', (req, res, next) => {
-  console.log(req);
+
+  let name = req.body.Name;
+  let email = req.body.Email;
+  let subject = req.body.Subject;
+  let message = req.body.Message;
+
+  if (name.length < 1 || email.length < 1 || subject.length < 1 || message.length < 1) {
+    res.status(403);
+    res.json({ Message: "Bad Request."});
+  } else {
+    res.status(200);
+    res.json({ Message: "Congratz Bro"});
+  }
 });
 
 module.exports = router;
