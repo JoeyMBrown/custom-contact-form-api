@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const nodemailer = require("nodemailer");
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -14,7 +15,7 @@ router.post('/', (req, res, next) => {
   let subject = body.subject;
   let message = body.message;
 
-  const emailToSend = {
+  const emailData = {
     name: name,
     email: email,
     subject: subject,
@@ -25,9 +26,43 @@ router.post('/', (req, res, next) => {
     res.status(403);
     res.json({ message: "Bad Request."});
   } else {
-    res.status(200);
-    res.json({ message: "Thank you for reaching out.  I'm looking forward to connecting!"});
+
+    if(sendEmail(emailData)) {
+      res.status(200);
+      res.json({ message: "Thank you for reaching out.  I'm looking forward to connecting!"});
+    } else {
+      res.json({ message: "ERROR in catch block of attempting to send email"});
+    }
   }
 });
+
+// async..await is not allowed in global scope, must use a wrapper
+async function sendEmail(emailData) {
+
+  // create reusable transporter object using the default SMTP transport
+  let transporter = nodemailer.createTransport({
+    service: process.env.SMTP_SERVICE,
+    host: process.env.SMTP_HOST,
+    port: 587,
+    secure: true, // true for 465, false for other ports
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD, 
+    },
+  });
+
+  // send mail with defined transport object
+  let res = await transporter.sendMail({
+    replyTo: emailData.email,
+    from: emailData.email, // sender address
+    to: process.env.EMAIL_USER,
+    subject: "Joeyb.dev Contact Form: " + emailData.name + " - " + emailData.subject, // Subject line
+    text: emailData.message, // plain text body
+    html: "<p>" + emailData.message + "</p>", // html body
+  });
+
+  console.log(res.status);
+
+}
 
 module.exports = router;
