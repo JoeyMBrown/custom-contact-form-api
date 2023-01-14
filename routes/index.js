@@ -7,18 +7,26 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', (req, res, next) => {
+  let { body } = req;
 
-  let name = req.body.Name;
-  let email = req.body.Email;
-  let subject = req.body.Subject;
-  let message = req.body.Message;
+  let name = body.name;
+  let email = body.email;
+  let subject = body.subject;
+  let message = body.message;
+
+  const emailToSend = {
+    name: name,
+    email: email,
+    subject: subject,
+    message: message
+  }
 
   if (name.length < 1 || email.length < 1 || subject.length < 1 || message.length < 1) {
     res.status(403);
-    res.json({ Message: "Bad Request."});
+    res.json({ message: "Bad Request."});
   } else {
     res.status(200);
-    res.json({ Message: "Congratz Bro"});
+    res.json({ message: "Thank you for reaching out.  I'm looking forward to connecting!"});
   }
 });
 
