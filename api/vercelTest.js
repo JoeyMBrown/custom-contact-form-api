@@ -25,7 +25,7 @@ export default function handler(req, res) {
   
       if(true) {
         res.status(200);
-        res.json({ message: stringify(sendEmail(emailData)) });
+        res.json({ message: JSON.stringify(sendEmail(emailData)) });
       } else {
         res.status(500);
         res.json({ message: "ERROR in catch block of attempting to send email"});
