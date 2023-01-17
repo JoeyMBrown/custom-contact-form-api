@@ -1,6 +1,8 @@
 const nodemailer = require("nodemailer");
 
-export default allowCors = fn => async (req, res) => {
+export default allowCors(handler);
+
+const allowCors = fn => async (req, res) => {
   res.setHeader('Access-Control-Allow-Credentials', true)
   res.setHeader('Access-Control-Allow-Origin', '*')
   // another common pattern
@@ -64,8 +66,6 @@ let transporter = nodemailer.createTransport({
         pass: process.env.EMAIL_PASSWORD, 
     },
 });
-
-allowCors(handler);
 
 // send mail with defined transport object
 let res = await transporter.sendMail({
