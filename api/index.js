@@ -1,7 +1,5 @@
 const nodemailer = require("nodemailer");
 
-export default allowCors(handler);
-
 const allowCors = fn => async (req, res) => {
   res.setHeader('Access-Control-Allow-Credentials', true)
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -80,3 +78,5 @@ let res = await transporter.sendMail({
 return res;
 
 }
+
+module.exports = allowCors(handler);
