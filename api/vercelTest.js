@@ -41,8 +41,8 @@ let transporter = nodemailer.createTransport({
     port: 587,
     secure: true, // true for 465, false for other ports
     auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD, 
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD, 
     },
 });
 
@@ -55,5 +55,7 @@ let res = await transporter.sendMail({
     text: emailData.message, // plain text body
     html: "<p>" + emailData.message + "</p>", // html body
 });
+
+console.log(res);
 
 }
