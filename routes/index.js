@@ -31,6 +31,7 @@ router.post('/', (req, res, next) => {
       res.status(200);
       res.json({ message: "Thank you for reaching out.  I'm looking forward to connecting!"});
     } else {
+      res.status(500);
       res.json({ message: "ERROR in catch block of attempting to send email"});
     }
   }
@@ -60,8 +61,6 @@ async function sendEmail(emailData) {
     text: emailData.message, // plain text body
     html: "<p>" + emailData.message + "</p>", // html body
   });
-
-  console.log(res.status);
 
 }
 
