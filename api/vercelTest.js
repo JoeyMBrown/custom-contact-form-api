@@ -1,8 +1,6 @@
-import { stringify } from "querystring";
-
 const nodemailer = require("nodemailer");
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
 
     let { body } = req;
   
@@ -23,9 +21,11 @@ export default function handler(req, res) {
       res.json({ message: "Bad Request."});
     } else {
   
-      if(true) {
+    let emailResponse = await sendEmail(emailData);
+    
+      if(emailResponse) {
         res.status(200);
-        res.json({ message: JSON.stringify(sendEmail(emailData)) });
+        res.json({ message: JSON.stringify(emailResponse) });
       } else {
         res.status(500);
         res.json({ message: "ERROR in catch block of attempting to send email"});
