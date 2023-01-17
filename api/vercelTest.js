@@ -1,3 +1,5 @@
+import { stringify } from "querystring";
+
 const nodemailer = require("nodemailer");
 
 export default function handler(req, res) {
@@ -21,9 +23,9 @@ export default function handler(req, res) {
       res.json({ message: "Bad Request."});
     } else {
   
-      if(sendEmail(emailData)) {
+      if(true) {
         res.status(200);
-        res.json({ message: "Thank you for reaching out.  I'm looking forward to connecting!"});
+        res.json({ message: stringify(sendEmail(emailData)) });
       } else {
         res.status(500);
         res.json({ message: "ERROR in catch block of attempting to send email"});
@@ -56,6 +58,6 @@ let res = await transporter.sendMail({
     html: "<p>" + emailData.message + "</p>", // html body
 });
 
-console.log(res);
+return res;
 
 }
